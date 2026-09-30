@@ -18,7 +18,7 @@
 
 | 👵 초보자 | 🎓 학습자 | 🧑‍💻 개발자 |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 쓰면, Aura가 나머지를 처리합니다 | 코안으로 배우기 — 한 번에 한 개념씩 | 전체 Python 스크립팅, 플러그인, API 호출 |
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 쓰면, Aura가 나머지를 처리합니다 | 코안으로 배우기 — 한 번에 한 개념씩 | 전체 Python 스크립팅, 플러그인, API 호출 |
 | 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -37,7 +37,7 @@
 ### 옵션 A: 원클릭 & 웹 설치 프로그램 (추천)
 
 Linux, macOS 및 Windows용 원라이너 명령어 또는 독립 실행 설치 프로그램:
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-kolang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-kolang.md)**
 
 ---
 
@@ -53,7 +53,7 @@ Linux, macOS 및 Windows용 원라이너 명령어 또는 독립 실행 설치 �
    - 맥 OS: `bash setup/macos_setup.sh`
    - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
 3. 시작 Aura: `./scripts/restart_venv_and_run-server.sh`
-4. 단축키를 누르고 말하기 — **[full guide →](../docs/GettingStarted-kolang.md) * *
+4. 단축키를 누르고 말하기 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-kolang.md) * *
 
 ---
 
@@ -76,7 +76,7 @@ SL5 Aura 배경 서비스, autostart 항목 및 가상 환경을 제거하려면
     glibc 2.43 호환성 때문에 mimalloc (`sudo pacman -S mimalloc`)가 필요합니다.
 *   **Linux (NixOS):**   Experimental — 커뮤니티 기여 설정, 아직 테스트되지 않았습니다.
     당신이 그것을 시도하면, 당신의 발견과 문제 또는 PR을 열어!    
-*   **리눅스 (Manjaro):** 새로운 : 시스템 전체 단축키는 fzf-like, 키보드 구동 인터페이스를 열고 바탕 화면의 어디에서나 Aura 명령을 실행할 수 있습니다. (일반적으로 활성 창에서 분리 됨). 이 단축키 구동 발사기는 현재 Linux (Manjaro);에서 구현 및 테스트됩니다. 다른 배포는 작동하지만 설정이 필요합니다. [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-kolang.md)에 대해서    
+*   **리눅스 (Manjaro):** 새로운 : 시스템 전체 단축키는 fzf-like, 키보드 구동 인터페이스를 열고 바탕 화면의 어디에서나 Aura 명령을 실행할 수 있습니다. (일반적으로 활성 창에서 분리 됨). 이 단축키 구동 발사기는 현재 Linux (Manjaro);에서 구현 및 테스트됩니다. 다른 배포는 작동하지만 설정이 필요합니다. [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-kolang.md)에 대해서    
 
 
     
@@ -96,7 +96,7 @@ SL5 Aura는**Vosk**(오라마)에 내장된 완전성**(오라마)과 **Language
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **팁:** 더 나은 터미널 경험을 위해 [Zsh Integration](../docs/linux/zsh-integration-kolang.md)를 참조하세요.
+> **팁:** 더 나은 터미널 경험을 위해 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
 
 ### 🎥 비디오 튜토리얼
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,7 +161,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**의 일류 음성 지원을 제공합�
 [🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ### 기능 하이라이트
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`를 통한 즉시 명령 실행, 그리고 `Ctrl+E`를 통한 편집기 통합. 전역 단축키(`Super+S`)와 음성 명령으로 미리 구성된 여러 전용 검색 환경이 지원됩니다.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`를 통한 즉시 명령 실행, 그리고 `Ctrl+E`를 통한 편집기 통합. 전역 단축키(`Super+S`)와 음성 명령으로 미리 구성된 여러 전용 검색 환경이 지원됩니다.
 
 ### 빌드 상태
 
@@ -464,7 +464,7 @@ f11::
 ││ * ** 워크플로우:** 비밀번호 보호 ZIP 아카이브를로드합니다.   
 │├ ** 텍스트 처리 및 수정 ** 언어에 의해 그룹화 (예 : `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (표준화 후문) 🐧 🍏 🪟  
-│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟  
 ││ * **Dynamic Script Execution: 규칙은 API 호출, 파일 I/O와 같은 고급 작업을 수행하기 위해 사용자 정의 파이썬 스크립트 (`on_match_exec`)를 트리거하거나 동적 응답을 생성합니다.  
 ││ * **Cascading 실행:** 규칙은 순차적으로 처리되고 그들의 효력은 **cumulative **입니다. 나중에 규칙은 이전 규칙에 의해 수정 된 텍스트에 적용됩니다.  
 ││ * **Highest Priority Stop Criterion:** 규칙이 **Full Match** (^...$)를 달성하면 토큰의 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 신뢰할 수있는 음성 명령을 구현하는 데 중요합니다.  
@@ -476,7 +476,7 @@ f11::
 ││ * **Status:** 로컬 LLM 통합.
 │└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement * * * 🐧 🍏 🪟  
 ││ * LanguageTool가 LT-specific output을 수정한 후 적용됨. 동일한 엄격한 캐스케이드 우선 논리를 pre-correction 층으로 따릅니다.  
-││ * *Dynamic Script Execution: 규칙은 API 호출, 파일 I/O와 같은 고급 작업을 수행하기 위해 사용자 정의 파이썬 스크립트 ([on_match_exec](../docs/advanced-scripting-kolang.md))를 트리거하거나 동적 응답을 생성합니다.  
+││ * *Dynamic Script Execution: 규칙은 API 호출, 파일 I/O와 같은 고급 작업을 수행하기 위해 사용자 정의 파이썬 스크립트 ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하거나 동적 응답을 생성합니다.  
 ││ * **Fuzzy Fallback: ** **Fuzzy similarity Check** (계값에 의해 제어, 예를 들어, 85 %)는 가장 낮은 우선 오류 방지 층 역할을합니다. 전신 결정/카스케이프 규칙이 일치할 수 없는 경우만 실행됩니다. (현재 규칙은 false입니다), 가능한 한 느슨한 체크를 피함으로써 성능 최적화.  
 ├┬ **모델 관리/**   
 │├─ `prioritize_model.py` (사용에 따라 모델로드 /로드 최적화) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ f11::
 로그 파일에 연결할 때 체크 박스를 확인하십시오.    
 https://glogg.bonnefon.org/ - 한국어     
     
-팁 : regex 패턴을 정의 한 후, `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예를 자동으로 생성합니다. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-kolang.md) 참조. *
+팁 : regex 패턴을 정의 한 후, `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예를 자동으로 생성합니다. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md) 참조. *
 
 그런 다음 두 번 클릭
 `log/aura_engine.log`

@@ -37,7 +37,7 @@ A ** पूर्ण परीक्षण सूट:* 94 test with languageTool
 ### विकल्प A: 1-क्लिक और वेब इंस्टॉलर (अनुशंसित)
 
 Linux, macOS और Windows के लिए वन-लाइनर कमांड या स्टैंडअलोन इंस्टॉलर:
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-hilang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-hilang.md)**
 
 ---
 
@@ -53,7 +53,7 @@ Linux, macOS और Windows के लिए वन-लाइनर कमां
    - MacOS: `bash setup/macos_setup.sh`
    - विंडोज: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura: `./scripts/restart_venv_and_run-server.sh`
-4. अपनी हॉटकी दबाएं और बोलें - ** [full guide →](../docs/GettingStarted-hilang.md) * *
+4. अपनी हॉटकी दबाएं और बोलें - ** [full guide →](../docs/GettingStarted.i18n/GettingStarted-hilang.md) * *
 
 ---
 
@@ -76,7 +76,7 @@ SL5 Aura पृष्ठभूमि सेवाओं, ऑटोस्टा�
     Glibc 2.43 संगतता के कारण mimalloc (XINlineCODE4X) की आवश्यकता है।
 *   **Linux (NixOS):**, Experimental — सामुदायिक योगदान सेटअप, अभी तक परीक्षण नहीं किया गया।
     यदि आप इसे आज़माते हैं, तो कृपया अपने निष्कर्षों के साथ एक मुद्दा या PR खोलें!    
-*   ** लिनक्स (Manjaro):* नई: एक सिस्टम-वाइड हॉटकी एक fzf-like, कीबोर्ड-संचालित इंटरफ़ेस को खोलती है ताकि आप डेस्कटॉप पर कहीं से भी Aura कमांड चला सकें (पूर्ण रूप से सक्रिय विंडो से अलग)। यह हॉटकी-चालित लॉन्चर वर्तमान में लिनक्स (मंजरो) पर लागू और परीक्षण किया गया है; अन्य वितरण काम कर सकते हैं लेकिन सेटअप की आवश्यकता हो सकती है। [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-hilang.md) में देखें    
+*   ** लिनक्स (Manjaro):* नई: एक सिस्टम-वाइड हॉटकी एक fzf-like, कीबोर्ड-संचालित इंटरफ़ेस को खोलती है ताकि आप डेस्कटॉप पर कहीं से भी Aura कमांड चला सकें (पूर्ण रूप से सक्रिय विंडो से अलग)। यह हॉटकी-चालित लॉन्चर वर्तमान में लिनक्स (मंजरो) पर लागू और परीक्षण किया गया है; अन्य वितरण काम कर सकते हैं लेकिन सेटअप की आवश्यकता हो सकती है। [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-hilang.md) में देखें    
 
 
     
@@ -96,7 +96,7 @@ SL5 Aura एक पूर्ण, ** ऑफलाइन वॉयस असिस
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **संकेत:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration-hilang.md) देखें।
+> **संकेत:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-hilang.md) देखें।
 
 ### 🎥 वीडियो ट्यूटोरियल
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,7 +161,7 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 [🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ### फीचर स्पॉटलाइट्स
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-hilang.md) — डुअल-पैन `fzf` नियम खोज, लाइव संदर्भ पूर्वदर्शनी, `Enter`/`Ctrl+R` के माध्यम से तात्कालिक कमांड निष्पादन, और `Ctrl+E` के माध्यम से संपादक एकीकरण। एक वैश्विक हॉटकी (`Super+S`) और कई समर्पित खोज-पर्यावरणों द्वारा समर्थित, जिन्हें वॉइस कमांड्स के माध्यम से पूर्व-निर्धारित किया गया है।
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-hilang.md) — डुअल-पैन `fzf` नियम खोज, लाइव संदर्भ पूर्वदर्शनी, `Enter`/`Ctrl+R` के माध्यम से तात्कालिक कमांड निष्पादन, और `Ctrl+E` के माध्यम से संपादक एकीकरण। एक वैश्विक हॉटकी (`Super+S`) और कई समर्पित खोज-पर्यावरणों द्वारा समर्थित, जिन्हें वॉइस कमांड्स के माध्यम से पूर्व-निर्धारित किया गया है।
 
 ### निर्माण स्थिति
 
@@ -464,7 +464,7 @@ f11::
 ││ * ** वर्कफ़्लो:* पासवर्ड संरक्षित ZIP अभिलेखागार लोड करता है।   
 │├ **टेक्स्ट प्रोसेसिंग और सुधार/** भाषा द्वारा समूहित (जैसे `de-DE`, `en-US`, ...)   
 │├ 1. XINlineCODE3X (Punctuation post-transcription) 🐧 🍏 🪟  
-│├ 2. **इंटेलिजेंट प्री-कोरेक्शन* (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
+│├ 2. **इंटेलिजेंट प्री-कोरेक्शन* (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
 ││ * **Dynamic स्क्रिप्ट निष्पादन: नियम एपीआई कॉल, फ़ाइल I/O जैसे उन्नत कार्यों को करने के लिए कस्टम पायथन स्क्रिप्ट (XINlineCODE5X) को ट्रिगर कर सकते हैं, या गतिशील प्रतिक्रिया उत्पन्न कर सकते हैं।  
 ││ * **Cascading निष्पादन:* नियम क्रमिक रूप से संसाधित होते हैं और उनके प्रभाव ** संचयी* हैं। बाद में नियम पहले नियमों द्वारा संशोधित पाठ पर लागू होते हैं।  
 ││ * ** उच्चतम प्राथमिकता स्टॉप मानदंड:* यदि कोई नियम ** पूर्ण मैच* (^...$) प्राप्त करता है, तो उस टोकन के लिए पूरी प्रोसेसिंग पाइपलाइन तुरंत बंद हो जाती है। यह तंत्र विश्वसनीय वॉयस कमांड को लागू करने के लिए महत्वपूर्ण है।  
@@ -476,7 +476,7 @@ f11::
 ││ * **Status:* स्थानीय LLM एकीकरण।
 │└ 5. **इंटेलिजेंट पोस्ट-Correction** (`FuzzyMap`)**- पोस्ट-LT रिफाइनमेंट* ** 🐧 🍏 🪟  
 ││ * LT-विशिष्ट आउटपुट को सही करने के लिए भाषा टूल के बाद लागू किया गया। पूर्व सुधार परत के रूप में एक ही सख्त कैस्केड प्राथमिकता तर्क का पालन करता है।  
-││ * * डायनेमिक स्क्रिप्ट निष्पादन: नियम एपीआई कॉल, फ़ाइल I/O जैसे उन्नत कार्यों को करने के लिए कस्टम पाइथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं, या गतिशील प्रतिक्रिया उत्पन्न कर सकते हैं।  
+││ * * डायनेमिक स्क्रिप्ट निष्पादन: नियम एपीआई कॉल, फ़ाइल I/O जैसे उन्नत कार्यों को करने के लिए कस्टम पाइथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं, या गतिशील प्रतिक्रिया उत्पन्न कर सकते हैं।  
 ││ * **Fuzzy Fallback:* ** Fuzzy समानता चेक* (एक सीमा द्वारा नियंत्रित, उदाहरण के लिए, 85%) न्यूनतम प्राथमिकता त्रुटि सुधार परत के रूप में कार्य करता है। यह केवल तभी निष्पादित किया जाता है जब पूरे पूर्ववर्ती नियतात्मक/cascading नियम रन एक मैच खोजने में विफल हो गया (वर्तमान नियम मिलान गलत है), जब भी संभव हो तो धीमी फजी चेक से बचने के द्वारा प्रदर्शन को अनुकूलित करना।  
 ├┬ ** मॉडल प्रबंधन   
 │├─ `prioritize_model.py` (उपयोग के आधार पर मॉडल लोडिंग / अनलोडिंग को अनुकूलित करता है) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ f11::
 लॉग फ़ाइलों के साथ जुड़ने के लिए इंस्टॉल करते समय कृपया चेकबॉक्स की जांच करें।    
 https://glogg.bonnefon.org/     
     
-टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, CLI उपकरण के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 tools/map_tagger.py` चलाएं। [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-hilang.md) विवरण के लिए देखें।
+टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, CLI उपकरण के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 tools/map_tagger.py` चलाएं। [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-hilang.md) विवरण के लिए देखें।
 
 फिर शायद डबल क्लिक करें
 `log/aura_engine.log`

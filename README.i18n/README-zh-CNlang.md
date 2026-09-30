@@ -18,7 +18,7 @@
 
 | 👵 初学者 | 🎓 学习者 | 🧑‍💻 开发者 |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-zh-CNlang.md#the-oma-modus-beginner-shortcut)：只需写一个词，Aura 会完成其余部分 | 与 Koans 一起学习——一次一个概念 | 完整的 Python 脚本、插件、API 调用 |
+| [grandma-mode](../docs/GettingStarted-zh-CNlang.md#the-oma-modus-beginner-shortcut)：只需写一个词，Aura 会完成其余部分 | 与 Koans 一起学习——一次一个概念 | 完整的 Python 脚本、插件、API 调用 |
 | 🗄️ 状态管理 | Trino + Airflow 编排, fzf, CopyQ, 语音/终端命令, 浏览器用户界面 |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -37,7 +37,7 @@
 ### 选项 A：一键安装 & 网络安装程序（推荐）
 
 适用于 Linux、macOS 和 Windows 的单行命令或独立安装程序：
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-zh-CNlang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-zh-CNlang.md)**
 
 ---
 
@@ -76,7 +76,7 @@
     由于 glibc 2.43 相容性,需要 mimalloc (`sudo pacman -S mimalloc`) .
 *   **Linux (NixOS):** QQ实验——社区贡献设置,尚未测试.
     如果你尝试,请打开一个问题 或公关与你的发现!    
-*   ** 利努克(马尼亚罗):** 新:全系统的热键打开了类似fzf,键盘驱动的接口,这样就可以从桌面上的任何位置运行Aura命令(完全从活动窗口解开). 这一由热键驱动的发射装置目前正在Linux(曼扎罗)上实施并测试; 其他分发可能可行,但需要设置。 见[docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-zh-CNlang.md)    
+*   ** 利努克(马尼亚罗):** 新:全系统的热键打开了类似fzf,键盘驱动的接口,这样就可以从桌面上的任何位置运行Aura命令(完全从活动窗口解开). 这一由热键驱动的发射装置目前正在Linux(曼扎罗)上实施并测试; 其他分发可能可行,但需要设置。 见[docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-zh-CNlang.md)    
 
 
     
@@ -96,7 +96,7 @@ SL5 Aura是一个完整的,**离线语音助理**,基于**Vosk**(用于语音到
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **提示：** 为了获得更好的终端体验，请参见 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-zh-CNlang.md)。
+> **提示：** 为了获得更好的终端体验，请参见 [Zsh Integration](../docs/linux/zsh-integration-zh-CNlang.md)。
 
 ### 🎥 视频教程
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,7 +161,7 @@ SL5-Aura为**奥库利X**和**SikulIX IDE**提供一等语音支持. 这种集�
 [🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ### 功能亮点
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-zh-CNlang.md)——双面板 `fzf` 规则搜索，实时上下文预览，通过 `Enter`/`Ctrl+R` 即时执行命令，并通过 `Ctrl+E` 集成编辑器。支持全局快捷键（`Super+S`）和通过语音命令预配置的多个专用搜索环境。
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-zh-CNlang.md)——双面板 `fzf` 规则搜索，实时上下文预览，通过 `Enter`/`Ctrl+R` 即时执行命令，并通过 `Ctrl+E` 集成编辑器。支持全局快捷键（`Super+S`）和通过语音命令预配置的多个专用搜索环境。
 
 ### 构建状态
 
@@ -185,9 +185,9 @@ SL5-Aura为**奥库利X**和**SikulIX IDE**提供一等语音支持. 这种集�
 
 </details>
 
-👉 **用其他语言阅读此内容：**
+👉 **用其他语言阅读本文：**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-zh-CNlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-zh-CNlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-zh-CNlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-zh-CNlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-zh-CNlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-zh-CNlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-zh-CNlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-zh-CNlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-zh-CNlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-zh-CNlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
@@ -464,7 +464,7 @@ OS兼容性图例 :
 ││ * ** 工作流量:** 装入密码保护的 ZIP 档案 。   
 │├ ** 文本处理和校正/** 按语言分组(如`de-DE`,`en-US`,.   
 │├ 1. `normalize_punctuation.py` (标准标注后标注) 🐧 🍏 🪟  
-│├ 2. **智能预校**(`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)). 🐧 🍏 🪟  
+│├ 2. **智能预校**(`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-zh-CNlang.md)). 🐧 🍏 🪟  
 ││ * ** Dynamic 脚本执行:规则可以触发自定义的Python脚本(`on_match_exec`)来进行高级动作,如API呼叫,文件一/O,或生成动态响应.  
 ││ * ** 处决:** 规则按顺序处理,其效果为**累积**。 后来的规则适用于被更早的规则所修改的文本.  
 ││ * ** 最高优先级停止标准:** 如果一项规则实现了** 完全匹配** (^...美元),则该令牌的整个处理管道立即停止。 这一机制对于执行可靠的语音指令至关重要。  
@@ -476,7 +476,7 @@ OS兼容性图例 :
 ││ * ** 现状:** 地方LLM一体化。
 │└ 5. ** 智能后校正** (`FuzzyMap`) * LT后校正 * 🐧 🍏 🪟  
 ││ * 语言工具后用于校正 LT 特定输出. 遵循与前修正层相同的严格串联优先级逻辑.  
-││ * * Dynamic 脚本执行:规则可以触发自定义的Python脚本([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md))来进行高级动作,如API呼叫,文件一/O,或生成动态响应.  
+││ * * Dynamic 脚本执行:规则可以触发自定义的Python脚本([on_match_exec](../docs/advanced-scripting-zh-CNlang.md))来进行高级动作,如API呼叫,文件一/O,或生成动态响应.  
 ││ * ** Fuzzy 退后:** ** Fuzzy 相似度检查**(由阈值控制,例如85%)作为最低优先级错误校正层。 只有在前作的确定/分类规则运行失败(当前规则匹配是虚假的)时才执行,尽可能避免缓慢的模糊检查来优化性能.  
 ├┬ ** 模式管理/**   
 │├─ `prioritize_model.py` (根据使用情况优化模型装载/卸载) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ OS兼容性图例 :
 请在安装与日志文件关联时检查复选框 。    
 https://glogg.bonnefon.org/ (中文(简体) ).     
     
-Tip: 在定义了您的 regex 模式后, 运行 `python3 tools/map_tagger.py` 以自动生成 CLI 工具的可搜索示例 。 详情见[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。 *
+Tip: 在定义了您的 regex 模式后, 运行 `python3 tools/map_tagger.py` 以自动生成 CLI 工具的可搜索示例 。 详情见[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-zh-CNlang.md)。 *
 
 然后再双击
 `log/aura_engine.log`
