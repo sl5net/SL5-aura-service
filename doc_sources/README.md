@@ -2,6 +2,13 @@
 
 # ⬟ SL5 Aura – Your Voice. Your Rules.
 
+<!-- Stack Overflow & Community Badges -->
+[![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_%26_Offline-2ea44f?style=for-the-badge&logo=keepassxc&logoColor=white)](#)
+[![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
 > 100% offline, privacy-first voice assistant framework.  
 > Define exactly what your voice does — from a single word  
 > to full Python scripts. No cloud. No data leaves your machine.  
@@ -9,22 +16,34 @@
 
 | 👵 Beginner | 🎓 Learner | 🧑‍💻 Developer |
 |---|---|---|
-
-
 | [grandma-mode](docs/GettingStarted.md#the-oma-modus-beginner-shortcut) : just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 | 🗄️ State Management | Trino + Airflow orchestration, fzf, CopyQ, voice/terminal commands, browser UIs |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2.87 J** per test (39 tests across 900+ maps @ 0.09s warm / 0.50s cold 🌿 measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
+
+⚡ **~2.87 J** per test (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
+
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)
+
+⚡ **Full test suite:** 94 tests with LanguageTool across >800 maps @ 0.07s warm / 0.46s cold · no cloud compute
 
 <details>
 <summary>Quick Start</summary>
 
 ## Quick Start
+
+### Option A: 1-Click & Web Installer (Recommended)
+
+One-liner command or standalone installer for Linux, macOS, and Windows:
+- **[→ Installer Guide & Direct Downloads](docs/OneClickInstaller.md)**
+
+---
+
+### Option B: Manual Installation (Developers / Git)
+
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-   ===> 🧩 read [docs/LINUX_WAYLAND_dotool](docs/LINUX_WAYLAND_dotool.md)
    - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
    - Linux (openSUSE): `bash setup/suse_setup.sh`
    - Linux (NixOS): `nix-shell setup/shell.nix` then `bash setup/nixos_setup.sh`
@@ -33,6 +52,16 @@
    - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Start Aura: `./scripts/restart_venv_and_run-server.sh`
 4. Press your hotkey and speak — **[full guide →](docs/GettingStarted.md)**
+
+---
+
+### Uninstallation
+To remove SL5 Aura background services, autostart entries, and virtual environments:
+- **Linux / macOS:** `bash setup/uninstall.sh`
+- **Windows (PowerShell):** `powershell -File setup/uninstall.ps1`
+*(Your custom rules in `config/maps/` are kept safe by default unless you specify `--purge`).*
+
+---
 
 
 **⚠️ System Requirements & Compatibility**
@@ -45,7 +74,7 @@
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
 *   **Linux (NixOS):** 🧪 Experimental — community-contributed setup, not yet tested.
     If you try it, please open an issue or PR with your findings!    
-*   **Linux (Manjaro):** New / experimental : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup . See in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md)    
+*   **Linux (Manjaro):** New : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup . See in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md)    
 
 
     
@@ -123,15 +152,18 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 ## Documentation
 
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ### Feature Spotlights
 - [Interactive Rule Search & Run](docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.md) — Dual-pane `fzf` rule search, live context previews, instant command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. Supported by a global hotkey (`Super+S`) and multiple dedicated search-environments pre-configured via voice commands.
 
 ### Build Status
-[![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
+
+[![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 
@@ -153,7 +185,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 👉 **Read this in other languages:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README-delang.md) | [🇪🇸 Español](README.i18n/README-eslang.md) | [🇫🇷 Français](README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README-hilang.md) | [🇯🇵 日本語](README.i18n/README-jalang.md) | [🇰🇷 한국어](README.i18n/README-kolang.md) | [🇵🇱 Polski](README.i18n/README-pllang.md) | [🇵🇹 Português](README.i18n/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README-zh-CNlang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
@@ -192,7 +224,7 @@ bash setup/{your-os}_setup.sh [OPTION]
 # For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
 `bash setup/manjaro_arch_setup.sh`
 
-`sudo pacman -S mimalloc`
+```sudo pacman -S mimalloc```
 
 
 # Examples:
@@ -313,12 +345,12 @@ if (f.openAppend()) {
 **Command for Windows when use [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -326,7 +358,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```
@@ -416,15 +448,12 @@ Legend for OS Compatibility:
 
 
 
-
-
 ### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
     
 <details>
 <summary>Aura-Core</summary>
-
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
@@ -548,7 +577,7 @@ Then maybe double-click
 <details>
 <summary>Used Models</summary>
 
-# Used Models:
+## Used Models:
 
 Recommendation: use models from Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probably faster)
 
