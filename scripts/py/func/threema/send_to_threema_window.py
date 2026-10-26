@@ -51,19 +51,19 @@ def send_to_threema_window(
         time.sleep(focus_delay_seconds)
 
         subprocess.run(
-            ["xdotool", "key", "ctrl+v"],
+            ["xdotool", "key", "--clearmodifiers", "ctrl+v"],
             check=True,
         )
 
         if press_enter:
-            time.sleep(0.05)
+            time.sleep(0.25)
             subprocess.run(
-                ["xdotool", "key", "Return"],
+                ["xdotool", "key", "--clearmodifiers", "Return"],
                 check=True,
             )
 
         return True
-
+    
     except subprocess.SubprocessError as exc:
         LOGGER.error("Subprocess execution failed while sending to Threema: %s", exc)
         return False

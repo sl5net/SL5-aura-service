@@ -40,9 +40,15 @@ def extract_text_messages(
 
         events = room_data.get("timeline", {}).get("events", [])
         for event in events:
-            if event.get("type") != "m.room.message":
+            event_type = event.get("type")
+            sender = event.get("sender")
+            LOGGER.info("Received event: type=%s, sender=%s, room=%s", event_type, sender, room_id)
+            if event_type == "m.room.encrypted":
+                LOGGER.warning("Room %s has encryption enabled (E2EE). Messages cannot be read.", room_id)
                 continue
-            if ignored_sender and event.get("sender") == ignored_sender:
+            if event_type != "m.room.message":
+                continue
+            if ignored_sender and sender == ignored_sender:
                 continue
 
             content = event.get("content", {})
@@ -58,13 +64,26 @@ def load_matrix_config() -> Dict[str, str]:
     """Load Matrix credentials from environment or project .secrets file."""
     root_dir = get_aura_project_root()
     secrets_path = Path(root_dir) / ".secrets"
-    if secrets_path.exists():
-        load_dotenv(secrets_path)
+    
+    
+    
+    
+    
 
-    homeserver = os.environ.get("MATRIX_HOMESERVER_URL", "https://tchncs.de").rstrip("/")
-    token = os.environ.get("MATRIX_ACCESS_TOKEN", "").strip()
-    room_id = os.environ.get("MATRIX_ROOM_ID", "").strip()
-    ignored_sender = os.environ.get("MATRIX_IGNORED_SENDER", "").strip()
+
+
+
+
+    if secrets_path.exists():
+        load_dotenv(secrets_path, override=True)
+
+    homeserver = os.environ.get("MATRIX_HOMESERVER_URL", "https://matrix.tchncs.de").rstrip("/")
+    token = os.environ.get("MATRIX_ACCESS_TOKEN", "").strip().strip("'\"")
+    room_id = os.environ.get("MATRIX_ROOM_ID", "").strip().strip("'\"")
+    ignored_sender = os.environ.get("MATRIX_IGNORED_SENDER", "").strip().strip("'\"")
+
+
+
 
     return {
         "homeserver": homeserver,
@@ -90,25 +109,34 @@ def run_relay() -> None:
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
     }
-    client = httpx.Client(base_url=homeserver, headers=headers, timeout=40.0)
+    
+    client = httpx.Client(base_url=homeserver, headers=headers, timeout=60.0)
 
     LOGGER.info("Starting initial sync against %s ...", homeserver)
+
     try:
-        initial_resp = client.get("/_matrix/client/v3/sync", params={"timeout": 0})
-        initial_resp.raise_for_status()
+        filter_param = '{"presence":{"types":[]},"room":{"timeline":{"limit":1}}}'
+        params = {"timeout": 0, "filter": filter_param}
+        initial_resp = client.get("/_matrix/client/v3/sync", params=params, timeout=120.0)
+        if initial_resp.status_code != 200:
+            LOGGER.error("Initial sync failed (%d): %s", initial_resp.status_code, initial_resp.text)
+            sys.exit(1)
         next_batch = initial_resp.json().get("next_batch", "")
-        LOGGER.info("Initial sync successful. Ready to relay incoming messages.")
+        LOGGER.info("Initial sync successful. Ready to relay incoming messages.")        
     except httpx.HTTPError as exc:
         LOGGER.error("Initial sync failed: %s", exc)
         sys.exit(1)
 
     while True:
+
         try:
             params = {
                 "since": next_batch,
                 "timeout": 30000,
+                "filter": '{"presence":{"types":[]}}',
             }
-            resp = client.get("/_matrix/client/v3/sync", params=params)
+            resp = client.get("/_matrix/client/v3/sync", params=params, timeout=45.0)
+                
             if resp.status_code == 200:
                 data = resp.json()
                 next_batch = data.get("next_batch", next_batch)

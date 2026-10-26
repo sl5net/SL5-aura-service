@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 # Imports
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+
 from pydantic import BaseModel
 
 from scripts.py.func.process_text_in_background import process_text_in_background
