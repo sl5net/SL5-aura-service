@@ -1,10 +1,13 @@
 
 """Standalone Matrix long-polling relay to Threema Beta."""
+import json
 import logging
 import os
 import sys
 import time
 from pathlib import Path
+
+
 from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 import httpx
@@ -112,17 +115,23 @@ def run_relay() -> None:
     
     client = httpx.Client(base_url=homeserver, headers=headers, timeout=60.0)
 
+
+    sync_filter_obj: Dict[str, Any] = {"presence": {"types": []}}
+    if room_id:
+        LOGGER.info("Restricting Matrix sync strictly to room: %s", room_id)
+        sync_filter_obj["room"] = {"rooms": [room_id], "timeline": {"limit": 10}}
+    filter_param = json.dumps(sync_filter_obj)
+
     LOGGER.info("Starting initial sync against %s ...", homeserver)
 
     try:
-        filter_param = '{"presence":{"types":[]},"room":{"timeline":{"limit":1}}}'
         params = {"timeout": 0, "filter": filter_param}
         initial_resp = client.get("/_matrix/client/v3/sync", params=params, timeout=120.0)
         if initial_resp.status_code != 200:
             LOGGER.error("Initial sync failed (%d): %s", initial_resp.status_code, initial_resp.text)
             sys.exit(1)
         next_batch = initial_resp.json().get("next_batch", "")
-        LOGGER.info("Initial sync successful. Ready to relay incoming messages.")        
+        LOGGER.info("Initial sync successful. Ready to relay incoming messages.")
     except httpx.HTTPError as exc:
         LOGGER.error("Initial sync failed: %s", exc)
         sys.exit(1)
@@ -133,9 +142,13 @@ def run_relay() -> None:
             params = {
                 "since": next_batch,
                 "timeout": 30000,
-                "filter": '{"presence":{"types":[]}}',
+                "filter": filter_param,
             }
             resp = client.get("/_matrix/client/v3/sync", params=params, timeout=45.0)
+             
+             
+             
+             
                 
             if resp.status_code == 200:
                 data = resp.json()
