@@ -2,10 +2,11 @@
 # scripts/py/func/microphone_status_too_log.py
 import platform
 
-import sounddevice as sd
-
-# Assuming logger.is already configured
-# logger.basicConfig(level=logger.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+try:
+    import sounddevice as sd
+except Exception as e:  
+    sd = None
+    print(f"Error: {e}")
 
 def log_microphone_status(logger):
     """
