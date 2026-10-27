@@ -31,7 +31,7 @@ jobs:
       - name: '2. Set up Python'
         uses: actions/setup-python@v7
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
 
       - name: '2b. Install system dependencies for PyGObject/pycairo build'
