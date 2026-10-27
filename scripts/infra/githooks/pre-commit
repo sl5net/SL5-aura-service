@@ -364,7 +364,7 @@ echo "psutil>=7.0.0" >> scripts/infra/requirements/requirements.txt
 echo "requests>=2.28.0" >> scripts/infra/requirements/requirements.txt
 echo "tqdm>=4.60.0" >> scripts/infra/requirements/requirements.txt
 echo "colorama>=0.4.0" >> scripts/infra/requirements/requirements.txt
-echo "pygame" >> scripts/infra/requirements/requirements.txt
+echo "pygame-ce" >> scripts/infra/requirements/requirements.txt
 
 # C) PLATFORM-SPECIFIC FIXES
 

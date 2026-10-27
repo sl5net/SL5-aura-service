@@ -2,4 +2,4 @@ cologne_phonetics
 jellyfish
 Requests
 setup_validator
-pygame
+pygame-ce

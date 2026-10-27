@@ -6,7 +6,7 @@ try:
     import sounddevice as sd
 except Exception as e:  
     sd = None
-    print(f"Error: {e}")
+    print(f"microphone_status_too_log.py:9 Error: {e}")
 
 def log_microphone_status(logger):
     """
