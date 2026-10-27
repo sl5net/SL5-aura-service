@@ -320,9 +320,10 @@ sed -i '/^jiwer==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^pyaudio==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^pytest==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^python-slugify==/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^soundfile==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^numpy/d' scripts/infra/requirements/requirements.txt
-
+sed -i '/^pygame==/d' scripts/infra/requirements/requirements.txt
 # Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
 # alt
 # awk -F'==' '/==/ {print tolower($1) "==" $2}' scripts/infra/requirements/requirements.txt > scripts/infra/requirements/requirements.txt.tmp && mv scripts/infra/requirements/requirements.txt.tmp scripts/infra/requirements/requirements.txt
