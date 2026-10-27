@@ -354,7 +354,9 @@ awk '/==/ {
 sed -i '/^psutil/d' scripts/infra/requirements/requirements.txt
 sed -i '/^requests/d' scripts/infra/requirements/requirements.txt
 sed -i '/^tqdm/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^colorama/d' scripts/infra/requirements/requirements.txt
+sed -i '/^pillow/Id' scripts/infra/requirements/requirements.txt
 
 # Re-add them with loose versioning
 echo "numpy<2.4" >> scripts/infra/requirements/requirements.txt
