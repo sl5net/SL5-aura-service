@@ -12,9 +12,11 @@ from dotenv import load_dotenv
 # Imports
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+
 from pydantic import BaseModel
 
 from scripts.py.func.process_text_in_background import process_text_in_background
+from scripts.py.func.threema.send_to_threema_window import send_to_threema_window
 
 
 def timestamp():
@@ -306,4 +308,117 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
         "status": "completed" if actual_result_text != "[NO OUTPUT FILE CREATED]" else "timeout",
         "result_text": actual_result_text,
         "input_text": raw_text
+    }
+
+
+class ThreemaSendRequest(BaseModel):
+    text: str
+    press_enter: bool = True
+
+
+@app.get("/threema", response_class=HTMLResponse)
+async def threema_web_interface():
+    """Serve a mobile-optimized interface for sending messages to Threema."""
+    html_content = """<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Aura Threema Remote</title>
+        <style>
+            body { font-family: sans-serif; margin: 16px; background: #121212; color: #e0e0e0; }
+            h1 { font-size: 1.3rem; }
+            label { display: block; margin-top: 12px; font-weight: bold; }
+            input, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 10px; border-radius: 6px; border: 1px solid #444; background: #1e1e1e; color: #fff; font-size: 1rem; }
+            textarea { resize: vertical; height: 120px; }
+            button { background: #007acc; border: none; cursor: pointer; margin-top: 16px; font-weight: bold; }
+            button:disabled { background: #555; }
+            #status { margin-top: 12px; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <h1>Aura &rarr; Threema Beta</h1>
+        <label for="apiKey">API Key:</label>
+        <input type="password" id="apiKey" placeholder="Enter API Key" autocomplete="current-password">
+        <label for="message">Message:</label>
+        <textarea id="message" placeholder="Type message here..."></textarea>
+        <label style="margin-top: 10px; font-weight: normal;">
+            <input type="checkbox" id="pressEnter" checked style="width: auto; margin-right: 6px;">
+            Press Enter (Send immediately)
+        </label>
+        <button id="sendBtn" onclick="sendMessage()">Send to Threema</button>
+        <div id="status"></div>
+        <script>
+            const keyInput = document.getElementById("apiKey");
+            const savedKey = localStorage.getItem("aura_api_key");
+            if (savedKey) {
+                keyInput.value = savedKey;
+            }
+            async function sendMessage() {
+                const statusDiv = document.getElementById("status");
+                const msgArea = document.getElementById("message");
+                const apiKey = keyInput.value.trim();
+                const text = msgArea.value.trim();
+                const pressEnter = document.getElementById("pressEnter").checked;
+                if (!apiKey) {
+                    statusDiv.style.color = "#ff6b6b";
+                    statusDiv.innerText = "Error: API Key is required.";
+                    return;
+                }
+                if (!text) {
+                    statusDiv.style.color = "#ff6b6b";
+                    statusDiv.innerText = "Error: Message is empty.";
+                    return;
+                }
+                localStorage.setItem("aura_api_key", apiKey);
+                statusDiv.style.color = "#ccc";
+                statusDiv.innerText = "Sending...";
+                try {
+                    const response = await fetch("/threema/send", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-API-Key": apiKey
+                        },
+                        body: JSON.stringify({ text: text, press_enter: pressEnter })
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.status === "success") {
+                        statusDiv.style.color = "#51cf66";
+                        statusDiv.innerText = "Message sent successfully.";
+                        msgArea.value = "";
+                    } else {
+                        statusDiv.style.color = "#ff6b6b";
+                        statusDiv.innerText = "Failed: " + (data.message || response.statusText);
+                    }
+                } catch (err) {
+                    statusDiv.style.color = "#ff6b6b";
+                    statusDiv.innerText = "Network error: " + err.message;
+                }
+            }
+        </script>
+    </body>
+    </html>"""
+    return HTMLResponse(content=html_content)
+
+
+@app.post("/threema/send")
+async def send_threema_message(
+        request: ThreemaSendRequest,
+        valid: bool = Depends(verify_api_key),
+):
+    """Endpoint to send text into Threema Beta window."""
+    success = send_to_threema_window(
+        text=request.text,
+        press_enter=request.press_enter,
+    )
+    if not success:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to focus or send text to Threema window.",
+        )
+    return {
+        "status": "success",
+        "message": "Text delivered to Threema window.",
+        "press_enter": request.press_enter,
     }

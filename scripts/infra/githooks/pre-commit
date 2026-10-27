@@ -320,9 +320,10 @@ sed -i '/^jiwer==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^pyaudio==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^pytest==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^python-slugify==/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^soundfile==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^numpy/d' scripts/infra/requirements/requirements.txt
-
+sed -i '/^pygame==/d' scripts/infra/requirements/requirements.txt
 # Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
 # alt
 # awk -F'==' '/==/ {print tolower($1) "==" $2}' scripts/infra/requirements/requirements.txt > scripts/infra/requirements/requirements.txt.tmp && mv scripts/infra/requirements/requirements.txt.tmp scripts/infra/requirements/requirements.txt
@@ -354,7 +355,9 @@ awk '/==/ {
 sed -i '/^psutil/d' scripts/infra/requirements/requirements.txt
 sed -i '/^requests/d' scripts/infra/requirements/requirements.txt
 sed -i '/^tqdm/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^colorama/d' scripts/infra/requirements/requirements.txt
+sed -i '/^pillow/Id' scripts/infra/requirements/requirements.txt
 
 # Re-add them with loose versioning
 echo "numpy<2.4" >> scripts/infra/requirements/requirements.txt
@@ -362,7 +365,7 @@ echo "psutil>=7.0.0" >> scripts/infra/requirements/requirements.txt
 echo "requests>=2.28.0" >> scripts/infra/requirements/requirements.txt
 echo "tqdm>=4.60.0" >> scripts/infra/requirements/requirements.txt
 echo "colorama>=0.4.0" >> scripts/infra/requirements/requirements.txt
-echo "pygame" >> scripts/infra/requirements/requirements.txt
+echo "pygame-ce" >> scripts/infra/requirements/requirements.txt
 
 # C) PLATFORM-SPECIFIC FIXES
 
