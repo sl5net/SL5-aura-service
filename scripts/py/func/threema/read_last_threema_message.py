@@ -95,7 +95,7 @@ def _run(args, **kwargs) -> subprocess.CompletedProcess:
 
 def _shell_vars(args) -> Dict[str, int]:
     out = _run(args).stdout.decode()
-    return {k: int(v) for k, _, v in (l.partition("=") for l in out.split()) if v.lstrip("-").isdigit()}
+    return {k: int(v) for k, _, v in (llllll.partition("=") for llllll in out.split()) if v.lstrip("-").isdigit()}
 
 
 def _find_window(window_class: str) -> Optional[str]:
