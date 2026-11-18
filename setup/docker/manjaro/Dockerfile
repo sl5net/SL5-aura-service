@@ -4,7 +4,9 @@ FROM manjarolinux/base:latest
 # Initialize pacman keys and install minimum system dependencies for Aura type_watcher and dotool
 RUN pacman-key --init && \
     pacman-key --populate archlinux manjaro && \
-    pacman -Syu --noconfirm --needed \
+    pacman -Sy --noconfirm --needed archlinux-keyring manjaro-keyring && \
+    pacman-key --populate archlinux manjaro && \
+    pacman -Su --noconfirm --needed \
     python \
     python-pip \
     git \
