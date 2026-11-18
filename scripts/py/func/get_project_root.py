@@ -9,6 +9,9 @@ def get_aura_project_root() -> Path:
     """Resolves project root using environment variable, cache file, or relative paths."""
     resolved_root = None
 
+    tmp_dir = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+    root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
+
     # Stage 1: Environment variable
     env_val = os.environ.get("SL5NET_AURA_PROJECT_ROOT", "").strip()
     if env_val:
@@ -18,8 +21,7 @@ def get_aura_project_root() -> Path:
 
     # Stage 2: Cached project root file in temp directory
     if not resolved_root:
-        tmp_dir = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-        root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
+
         if root_file.is_file():
             try:
                 cached_val = root_file.read_text(encoding="utf-8").strip()
@@ -33,12 +35,26 @@ def get_aura_project_root() -> Path:
     # Stage 3: Relative path calculation (assumes file is in scripts/py/func/)
     if not resolved_root:
         current_file = Path(__file__).resolve()
-        if len(current_file.parents) >= 3:
+        if len(current_file.parents) >= 4:
             resolved_root = current_file.parents[3]
         else:
             resolved_root = current_file.parent
 
     root_str = str(resolved_root)
+    
+
+    try:
+        if (
+            not root_file.is_file()
+            or root_file.read_text(encoding="utf-8").strip() != root_str
+        ):
+            root_file.parent.mkdir(parents=True, exist_ok=True)
+            root_file.write_text(root_str, encoding="utf-8")
+    except Exception as e_20261118_0841:
+        print(f"Failed to write temp root. 20261118_0841:{e_20261118_0841}")
+        
+        
+    
     os.environ["SL5NET_AURA_PROJECT_ROOT"] = root_str
 
     if os.environ.get("PYTHONPATH"):

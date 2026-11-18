@@ -46,9 +46,11 @@ jobs:
           sudo chmod 666 /dev/uinput
 
       - name: Build Aura Test Docker Image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build -t aura-tester -f setup/docker/ubuntu/Dockerfile .
-
+          DOCKER_BUILDKIT=1 docker build --secret id=GITHUB_TOKEN,env=GITHUB_TOKEN -t aura-tester -f setup/docker/ubuntu/Dockerfile .
+          
       - name: Start Aura Test Container
         run: |
           docker run -d --name aura-container \

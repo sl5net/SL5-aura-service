@@ -51,9 +51,10 @@ jobs:
           sudo chmod 666 /dev/uinput
 
       - name: Build Aura Manjaro Test Docker Image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build -t aura-manjaro-tester -f setup/docker/manjaro/Dockerfile .
-
+          DOCKER_BUILDKIT=1 docker build --secret id=GITHUB_TOKEN,env=GITHUB_TOKEN -t aura-manjaro-tester -f setup/docker/manjaro/Dockerfile .
       - name: Start Aura Manjaro Test Container
         run: |
           docker run -d --name aura-manjaro-container \

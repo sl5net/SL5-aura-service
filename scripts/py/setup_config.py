@@ -298,6 +298,7 @@ if run_i18n_test(sys.argv):
 #     except Exception as e:
 #         return f"Unknown{e}"
 
+
 def get_country():
     urls = ["https://ipapi.co/country/", "https://ipinfo.io/country"]
     for url in urls:
@@ -514,7 +515,10 @@ def setup_linux_autostart(repo_root):
             "Type=Application\n"
             "Name=aura_engine\n"
             "Comment=Start SL5 Aura Service in background\n"
-            f"Exec=bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; then exit 0; else mkdir -p /tmp/sl5_aura && touch /tmp/sl5_aura/sl5net_aura_project_root; \"{script_path}\" >> \"{log_path}\" 2>&1; fi'\n"
+            # f"Exec=bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; then exit 0; else mkdir -p /tmp/sl5_aura && touch /tmp/sl5_aura/sl5net_aura_project_root; \"{script_path}\" >> \"{log_path}\" 2>&1; fi'\n"
+            f"Exec=bash -c 'if pgrep -f \"[a]ura_engine.py\" >/dev/null; then exit 0; "
+            f"else mkdir -p /tmp/sl5_aura && echo \"{repo_root}\" > /tmp/sl5_aura/sl5net_aura_project_root && "
+            f"\"{script_path}\" >> \"{log_path}\" 2>&1; fi'\n"
             "Icon=text-x-script\n"
             "Terminal=false\n"
             "StartupNotify=false\n"
@@ -563,6 +567,11 @@ def setup_macos_autostart(repo_root):
         print(f"[OK] macOS LaunchAgent written to {plist_file}", file=sys.stderr)
     except Exception as e:
         print(f"[WARN] Failed to create macOS autostart entry: {e}", file=sys.stderr)
+
+
+
+
+
 
 
 def setup_windows_autostart(repo_root):
@@ -693,3 +702,6 @@ if ans_autostart in ("y", "yes", "1"):
         setup_windows_autostart(repo_root)
     elif sys.platform.startswith("linux"):
         setup_linux_autostart(repo_root)
+
+
+
